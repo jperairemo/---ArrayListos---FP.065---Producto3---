@@ -10,19 +10,22 @@
     <div class="logo">🚗</div>
     <h1>AlquilaTusVehículos</h1>
     <p class="muted">Ingresa tus credenciales para continuar</p>
+
     <form th:action="@{/login}" method="post" class="stack">
-        <label>Email
-            <input type="email" name="username" placeholder="ejemplo@correo.com" required>
+        <label>Email / Usuario
+            <input type="text" name="username" placeholder="ejemplo@correo.com" required>
         </label>
+
         <label>Contraseña
             <input type="password" name="password" placeholder="••••••••" required>
         </label>
+
         <button type="submit" class="btn-primary">Iniciar sesión</button>
     </form>
+
     <p class="muted small">
-        ¿No tienes cuenta? <a th:href="@{/register}">Regístrate</a>
+        ¿No tienes cuenta? <a th:href="@{/registro}">Regístrate</a>
     </p>
-    <p class="muted tiny">Demo: admin@admin.com / Admin</p>
 </div>
 </body>
 </html>
