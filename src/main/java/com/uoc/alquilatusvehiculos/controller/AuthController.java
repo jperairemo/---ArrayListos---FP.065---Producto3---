@@ -1,27 +1,34 @@
 package com.uoc.alquilatusvehiculos.controller;
 
+import com.uoc.alquilatusvehiculos.model.User;
+import com.uoc.alquilatusvehiculos.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthController {
 
-    @GetMapping({"/","/login"})
-    public String login() { return "login"; }
+    @Autowired
+    private UserService userService;
 
-    @PostMapping("/login")
-    public String doLogin(@RequestParam String username,
-                          @RequestParam String password) {
-        if ("admin@islatransfers.com".equalsIgnoreCase(username) && "Admin".equals(password)) {
-            return "redirect:/admin/dashboard";
-        }
-        // demo: cualquier otro usuario entra a dashboard también
-        return "redirect:/admin/dashboard";
+    // Muestra formulario de login
+    @GetMapping("/login")
+    public String login() {
+        return "login";  // carga login.html
     }
 
-    @GetMapping("/register")
-    public String registerView() { return "register"; }
+    // Muestra formulario de registro
+    @GetMapping("/registro")
+    public String registroForm(User user) {
+        return "registro"; // carga registro.html
+    }
 
-    @PostMapping("/register")
-    public String registerPost() { return "redirect:/login?registered=true"; }
+    // Procesa el POST del formulario de registro
+    @PostMapping("/registro")
+    public String registrar(User user) {
+        userService.saveUser(user); // registra usuario y cifra contraseña
+        return "redirect:/login";  // redirige al login después de registrarse
+    }
 }
