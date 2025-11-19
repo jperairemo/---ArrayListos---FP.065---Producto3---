@@ -60,15 +60,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")  // Desactivar CSRF para API REST
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/registro", "/registro/**",
                                 "/style.css", "/css/**", "/js/**", "/img/**",
                                 "/webjars/**", "/favicon.ico").permitAll()
 
-                        // Solo ADMIN puede manejar el panel admin
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/**").permitAll()  // API sin login
 
-                        // USER puede entrar en su panel (y ADMIN también si quiere)
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
                         .anyRequest().authenticated()
